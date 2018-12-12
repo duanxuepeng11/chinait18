@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript">
+        function getValue(){
+            var phone = document.getElementById("phone2").value
+            alert(phone)
+            // alert("aaa")
+        }
+
+        $(function() {
+            $.ajax({
+                type : "GET",
+                url : "/spark/findByPhone_user",
+                data: "phone="+15190259539,
+                dataType: 'json',
+                async: false,
+                success : function(result) {
+                    document.getElementsByTagName('b')[0].innerHTML=result.name;
+                },
+                error : function() {
+                    alert("請求失敗");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    手机号: <input id="phone2" type="text" name="phone">
+    年份: <input type="text" name="year">
+    月: <input type="text" name="year">
+    <input type="button" value="提交" onclick="getValue();"/>
+
+<b></b>您好,感谢登陆使用
+
+</body>
+</html>
