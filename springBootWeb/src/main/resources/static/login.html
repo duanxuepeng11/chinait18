@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>1000phoneLogin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="js/echarts.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
+    <script type="text/javascript">
+        function check_login()
+        {
+            //alert(document.getElementById("username").value)
+            if(document.getElementById("username").value=="用户名")
+            {
+                alert("请检查您的用户名是否为空！");
+                return false;
+            }
+            if(document.getElementById("password").value=="密码"){
+                alert("请检查您的密码是否为空！");
+                return false
+            }
+        }
+
+    </script>
+</head>
+<body style="background-color: #e0e0e0">
+<!-- main -->
+<div class="main">
+    <h1>
+        <img src="image/CRQSlogo.png" width="313.5" height="81" >
+    </h1>
+    <form action="/spark/logins" method="get" name="form1" onsubmit="return check_login();">
+        <input type="text" value="用户名" id="username" name="username" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '请输入';}"
+               required="">
+        <input type="text" value="密码" id="password" name="password" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '请输入';}"
+               required="">
+        <center><input type="submit" value="登录" class=""btn btn-info"></center>
+    </form>
+
+
+</div>
+<div class="footer">
+    <p>
+        &copy 2018 Welcome Login Form. All rights reserved  guozenjun
+    </p>
+</div>
+<!-- //main -->
+
+</body>
+</html>

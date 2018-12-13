@@ -14,7 +14,7 @@ public class GoodServiceImpl implements GoodService {
     @Autowired
     private GoodDao goodDao;
     @Override
-    public List<Good> list_good(String name) {
-        return goodDao.list_good(name);
+    public List<Good> list_good(int name,int did) {
+        return goodDao.list_good(name,did);
     }
 }

@@ -35,4 +35,13 @@ public class ZTable implements Serializable {
     public void setCount(double count) {
         Count = count;
     }
+
+    @Override
+    public String toString() {
+        return "ZTable{" +
+                "zhudaNum=" + zhudaNum +
+                ", beidaNum=" + beidaNum +
+                ", Count=" + Count +
+                '}';
+    }
 }

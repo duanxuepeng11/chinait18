@@ -4,37 +4,330 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
     <script type="text/javascript">
+        var phone ="";
+        var year= "";
+        var month="";
+        var dataGoods =[]; //ajax接收好友度数据
+        var dataZd =[]; //ajax接收主打
+        var dataBd =[];//ajax接收被打
+        var dataSum =[];//ajax接收总数量
+        var monthData=[];
+        //3个 ajax，第一个异步访问 去后台请求名字
+        function f1() {
+            $(function() {
+                $.ajax({
+                    type : "GET",
+                    url : "/spark/findByPhone_user",
+                    data: "phone="+phone,
+                    dataType: 'json',
+                    async: false,
+                    success : function(result) {
+                        if(result.name == null){
+                            document.getElementsByTagName('b')[0].innerHTML="亲，你还没输入查询条件";
+                        }else{
+                            document.getElementsByTagName('b')[0].innerHTML=result.name;
+                        }
+
+                    },
+                    error : function() {
+                        alert("請求失敗");
+                    }
+                });
+            });
+        }
+        //第二个ajax，去后台请求圆饼图的数据
+        function f2() {
+                dataGoods = []
+                var va = 0;
+                var na = "";
+                $.ajax({
+                    type : "GET",
+                    url : "/spark/findByphone_Good",
+                    data: "phone="+phone+"&year="+year+"&month="+month,
+                    dataType: 'json',
+                    async: false,
+                    success : function(result) {
+                        //alert(result.length)
+                        for(var i=0;i<result.length;i++){
+                            va = result[i].value
+                            na = result[i].name
+                          //  alert(na+"-"+va)
+                             dataGoods.push({value: va, name: na})
+                       }
+                       fff(dataGoods)
+        },
+                    error : function() {
+                        alert("請求失敗");
+                    }
+                });
+        }
+        //第三个ajax，去后台请求折现图的数据
+        function f3() {
+            dataZd =[];
+            dataBd =[];
+            dataSum =[];
+            monthDate=[];
+            var zd = 0;
+            var bd = 0;
+            var count=0;
+
+                $.ajax({
+                    type : "GET",
+                    url : "/spark/findByInput", //请求后台接口
+                    data: "phone="+phone+"&year="+year+"&month="+month,
+                    dataType: 'json',
+                    async: false,
+                    success : function(result) {
+                        monthData=[];
+                        //alert("aaaaaaaaa")
+                        //alert(result.length)
+                        if(result.length == 12){
+                            for(var j=1;j<=result.length;j++){
+                                monthData.push(j+"月");
+                            }
+                        }else {
+                            for(var j=1;j<=result.length;j++){
+                                monthData.push(j+"日");
+                            }
+                        }
+                        for(var i=0;i<result.length;i++){
+                            zd = result[i].zhudaNum;
+                            bd = result[i].beidaNum;
+                            count = result[i].count;
+                            //alert(zd+"-"+bd+"-"+count);
+                            //  alert(na+"-"+va)
+                            //dataGoods.push({zhudaNum: zd, name: na})
+                            dataZd.push(zd/100);
+                            dataBd.push(bd/100);
+                            dataSum.push(count);
+
+                        }
+                        funOpt2(dataZd,dataBd,dataSum,monthData)
+                    },
+                    error : function() {
+                        alert("請求失敗");
+                    }
+                });
+        }
         function getValue(){
-            var phone = document.getElementById("phone2").value
-            alert(phone)
+            phone = document.getElementById("phone2").value;
+           year = document.getElementById("year").value;
+            month = document.getElementById("month").value;
+            alert(phone+","+year+","+month);
             // alert("aaa")
+            f1();
+            f2();
+            f3();
+           /* for(var i=0;i<dataGoods.length;i++){
+                alert(dataGoods[i].name+"--"+dataGoods[i].value)
+            }*/
         }
 
-        $(function() {
-            $.ajax({
-                type : "GET",
-                url : "/spark/findByPhone_user",
-                data: "phone="+15190259539,
-                dataType: 'json',
-                async: false,
-                success : function(result) {
-                    document.getElementsByTagName('b')[0].innerHTML=result.name;
-                },
-                error : function() {
-                    alert("請求失敗");
-                }
-            });
-        });
+
+
     </script>
 </head>
-<body>
-    手机号: <input id="phone2" type="text" name="phone">
-    年份: <input type="text" name="year">
-    月: <input type="text" name="year">
-    <input type="button" value="提交" onclick="getValue();"/>
+<body style="background-color: #e0e0e0">
 
-<b></b>您好,感谢登陆使用
+<nav class="navbar navbar-inverse" style="margin-bottom: 40px;">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#"><b>😙,请输入查询手机号</b></a>
+    </div>
+    <div class="navbar-header navbar-form">
+        <input id="phone2" class="form-control" type="text" name="phone" placeholder="手机号">
+    </div>
 
+<!-- 年份: <input type="text" name="year"> -->
+
+<select name="year" id="year" class="navbar-form " style="width: 100px; height: 30px; border: 1px solid black" >
+    <option value ="2018">2018</option>
+    <option value="2017">2017</option>
+    <option value="2016">2016</option>
+</select>
+
+<!-- 月: <input type="text" name="year"> -->
+<select name="month" id="month" class="navbar-form " style="width: 100px; height: 30px; border: 1px solid black" >
+    <option value="-1">月份</option>
+    <option value="01">1</option>
+    <option value="02">2</option>
+    <option value="03">3</option>
+    <option value="04">4</option>
+    <option value="05">5</option>
+    <option value="06">6</option>
+    <option value="07">7</option>
+    <option value="08">8</option>
+    <option value="09">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+</select>
+    <button type="button" class="btn btn-default " style="width: 120px;" onclick="getValue();">查询 <span class="glyphicon glyphicon-search"></span></button>
+    <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
+        <li style="font-size: 18px;"><a href="#">退出 <span class="glyphicon glyphicon-log-in" ></span></a></li>
+    </ul>
+</nav>
+<br />
+<div style="height: 500px;">
+<div id="b" style="width:800px;height:500px;float:left;"></div>
+<div id="a" style="width:400px;height:350px;float:left;margin-left: 100px;margin-top: 100px;"></div>
+</div>
+<script type="text/javascript">
+
+    var first = echarts.init(document.getElementById('a'));
+    var second = echarts.init(document.getElementById('b'));
+
+    function fff(dataGoods) {
+        //alert("len: "+dataGoods.length)
+        var names=[];
+        for(var i=0;i<dataGoods.length;i++){
+            // var name = dataGoods[i].name.substr(0,3)
+            // alert(name)
+            names.push(dataGoods[i].name)
+        }
+        option1 = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:names
+            },
+            series: [
+                {
+                    name:'亲密度',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    // data:[
+                    //     {value:335, name:'很熟悉'},
+                    //     {value:310, name:'熟悉'},
+                    //     {value:234, name:'有点熟悉'},
+                    //     {value:135, name:'打错电话'},
+                    //     {value:1548, name:'特别熟悉'}
+                    // ],
+                    data: dataGoods,
+                    itemStyle:{
+                        normal:{
+                            label:{
+                                show: true,
+                                formatter: '{b} : {c} ({d}%)'
+                            },
+                            labelLine :{show:true}
+                        }
+                    }
+                }
+            ]
+        };
+
+        first.setOption(option1)
+    }
+
+    
+    <!--第二个option2 -->
+    function funOpt2(dataZd,dataBd,dataSum,monthData) {
+        option2 = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            legend: {
+                data:['主打数量','被打数量','打电话数量']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: monthData,
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '打电话数量(min)',
+                    min: 0,
+                    max: 500,
+                    interval: 100,
+                    axisLabel: {
+                        formatter: '{value}'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '打电话次数',
+                    min: 0,
+                    max: 20,
+                    interval: 2,
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                }
+            ],
+            series: [
+                {
+                    name:'主打数量',
+                    type:'bar',
+                    data:dataZd
+                },
+                {
+                    name:'被打数量',
+                    type:'bar',
+                    data:dataBd
+                },
+                {
+                    name:'打电话数量',
+                    type:'line',
+                    yAxisIndex: 1,
+                    data:dataSum
+                }
+            ]
+        };
+        second.setOption(option2)
+    }
+
+</script>
+
+
+<footer>
+    <img src="image/TechSUfooter(1).png" style="width: 100%;height: 100px;margin-bottom: -100px">
+</footer>
 </body>
 </html>

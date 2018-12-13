@@ -3,6 +3,8 @@ package com.qianfeng.controller;
 import com.qianfeng.domain.User;
 import com.qianfeng.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,12 +32,18 @@ public class UserController {
     @ResponseBody
     public User findByPhone(String phone, HttpServletRequest request){
         System.out.println("findByPhone...."+phone);
-        User byPhone = userServiceImpl.findByPhone(phone);
+        User byPhone = new User();
+        if(phone.equals("")){
+            //如果为传入值，直接退出
+            return byPhone;
+        }else{
+         byPhone = userServiceImpl.findByPhone(phone);
         String name = byPhone.getName();//得到名字
         //放入到session中
         HttpSession session = request.getSession();
         session.setAttribute("name",name);
         return byPhone;
+        }
     }
 
 }

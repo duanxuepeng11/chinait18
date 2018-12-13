@@ -1,6 +1,7 @@
 package com.qianfeng.service.Impl;
 
 import com.qianfeng.domain.Contact;
+import com.qianfeng.domain.Data;
 import com.qianfeng.mapper.ContactDao;
 import com.qianfeng.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +20,19 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact findZhu(int phone, int year) {
-       Contact cc = contactDao.findZhu(phone,year);
-       if(cc ==null){
-           return null;
-       }else{
-           return cc;
-       }
+    public List<Contact> findZhu(int phone, int year) {
+       return contactDao.findZhu(phone,year);
+
     }
 
     @Override
-    public Contact findBei(int phone, int did) {
-        Contact cc = contactDao.findBei(phone,did);
-        if(cc ==null){
-            return null;
-        }else{
-            return cc;
-        }
+    public List<Contact> findBei(int phone, int did) {
+        return contactDao.findBei(phone,did);
+
+    }
+
+    @Override
+    public Data findZhu2(int uid, int did) {
+        return contactDao.findZhu2(uid,did);
     }
 }
