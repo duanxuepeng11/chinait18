@@ -35,4 +35,37 @@ public class UserServiceImpl implements UserService {
     public User findByUid(int uid_you) {
         return userDao.findByUid(uid_you);
     }
+
+    @Override
+    public int findUser(String name) {
+        System.out.println("service");
+        int id = 0;
+        try{
+            id = userDao.findUser(name);
+        }catch (Exception e){}
+
+        return id;
+    }
+
+    @Override
+    public int reUser(String username, String pass) {
+        int i = userDao.reUser(username, pass);
+        if(i > 0){
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int logins(String username, String password) {
+        int i = 0;
+        try {
+            i = userDao.logins(username, password);
+        }catch (Exception e){
+
+        }
+        System.out.println("==="+i);
+        return i;
+    }
+
 }

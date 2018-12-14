@@ -10,4 +10,10 @@ public interface UserService {
     User findByPhone(String phone);
 
     User findByUid(int uid_you);
+
+    int findUser(String name);
+
+    int reUser(String username,String pass);
+
+    int logins(String username,String password);
 }

@@ -1,5 +1,6 @@
 package com.qianfeng.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.qianfeng.domain.User;
 import com.qianfeng.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,40 @@ public class UserController {
         HttpSession session = request.getSession();
         session.setAttribute("name",name);
         return byPhone;
+        }
+    }
+
+    @RequestMapping("/togister")
+    public String toRes(){
+        return "register";
+    }
+
+    @RequestMapping("/oruser")
+    @ResponseBody
+    public int oruser(String name){
+        System.out.println("conll");
+        int id = userServiceImpl.findUser(name);
+        System.out.println("-----: "+ id);
+        return id;
+    }
+
+    @RequestMapping("/reUser")
+    public String reUser(String username,String pass1){
+        int i = userServiceImpl.reUser(username,pass1);
+        if(i > 0){
+            return "login";
+        }
+        return "registers";
+    }
+
+    @RequestMapping("/logins")
+    public String logins(String username,String password){
+        int id = userServiceImpl.logins(username,password);
+        System.out.println("id : " + id);
+        if(id > 0){
+            return "testsession";
+        }else{
+            return "login";
         }
     }
 
