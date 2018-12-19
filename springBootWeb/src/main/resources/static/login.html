@@ -32,7 +32,7 @@
         <img src="image/CRQSlogo.png" width="313.5" height="81" >
     </h1>
     <center>
-    <form action="/spark/logins" method="get" name="form1" onsubmit="return check_login();">
+    <form action="/spark/logins" method="post" name="form1" onsubmit="return check_login();">
         <input type="text" value="用户名" id="username" name="username" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '请输入';}"
                required="">
         <input type="text" value="密码" id="password" name="password" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '请输入';}"

@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,9 +67,9 @@ public class UserController {
     public String reUser(String username,String pass1){
         int i = userServiceImpl.reUser(username,pass1);
         if(i > 0){
-            return "login";
+            return "redirect:/redirectLogin";
         }
-        return "registers";
+        return "redirect:/togister";
     }
 
     @RequestMapping("/logins")
@@ -75,10 +77,21 @@ public class UserController {
         int id = userServiceImpl.logins(username,password);
         System.out.println("id : " + id);
         if(id > 0){
-            return "testsession";
+            return "redirect:/redirectTestsession";
         }else{
-            return "login";
+            return "redirect:/redirectLogin";
         }
     }
 
+    @RequestMapping("/redirectLogin")
+    public String redirectLogin(){
+        System.out.println("login跳转....");
+        return "login";
+    }
+
+    @RequestMapping("/redirectTestsession")
+    public String redirectTestsession(){
+        System.out.println("session....");
+        return "testsession";
+    }
 }
