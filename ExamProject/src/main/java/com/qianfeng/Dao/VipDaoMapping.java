@@ -16,4 +16,10 @@ public interface VipDaoMapping {
     @Select("select * from pettyofficial limit #{code},#{size}")
     public List<VIPStudent> findAllPettyOfficial(@Param("code") Integer pageCode,@Param("size") Integer pageSizes);
 
+    @Select("select count(1) from vipstudent")
+    public int vipCount();
+
+    @Select("select count(1) from pettyofficial")
+    public int petCount();
+
 }

@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>vip&末班列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/bootstrap.css" rel="stylesheet" />
+	</head>
+	<script type="text/javascript">
+
+        var code = 1; // 第几页
+        var size = 10; // 一页显示数量
+		var zong = 1;
+
+		function change() {
+		    // 初始化
+			code = 1;
+			// 调用
+			sele()
+        }
+
+        // 上一页
+        function limitJian() {
+            if(code == 1){
+                code = 1;
+			}else{
+                code  = code - 1;
+			}
+			// 调用方法
+			sele()
+        }
+
+        // 下一页
+        function limitJia() {
+			if(code >= zong){
+				code = zong;
+			}else{
+			    code = code + 1;
+			}
+			// 调用方法
+			sele()
+        }
+
+        // 查询
+        function sele() {
+            var sel = $("#select").val()
+            $("#tables tr:not(:first)").html(""); // 清空数据
+            var da = {"select_value":sel,"code":code,"size":size};
+            // alert("== : " + da)
+            var url = "/hadoop/vipdd"
+            $.post(url, da, function(data) {
+                // 遍历
+                var beanlist = data.beanList
+                zong = data.totalPage
+				for(var list in beanlist){
+                    $("#tables").append("<tr><td>" + beanlist[list].exam_id + "</td>" +
+                        "<td>" + beanlist[list].start_time + "</td>" +
+                        "<td>" + beanlist[list].calss_name + "</td>" +
+                        "<td>" + beanlist[list].examinee_num + "</td>" +
+                        "<td>" + beanlist[list].examinee_name + "</td>" +
+                        "<td>" + beanlist[list].objective_mark + "</td>" +
+                        "<td>" + beanlist[list].subjective_mark + "</td>" +
+                        "<td>" + beanlist[list].total_mark + "</td></tr>")
+				}
+            }, "json");
+        }
+
+	</script>
+	<body>
+
+		<ul class="nav nav-tabs">
+			<li role="presentation" class="active"><a href="#">首页</a></li>
+			<li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
+			<li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
+			<li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
+		</ul>
+
+		<div style="width: 1200px; height: 800px; margin: auto;">
+
+			<!--页头-->
+			<div class="page-header">
+				<h1>特殊学员列表 <small>关爱特殊学员</small></h1>
+			</div>
+			<!--下拉框-->
+			<div style="margin-top: 10px; margin-bottom: 10px;">
+				<select style="width: 150px; height: 35px;" id="select" onchange="sele()">
+					<option value="1">VIP学员</option>
+					<option value="2">末班学员</option>
+				</select>
+			</div>
+
+			<!--列表-->
+			<table class="table" id="tables">
+				<th>考试ID</th>
+				<th>考试时间</th>
+				<th>班级</th>
+				<th>学号</th>
+				<th>姓名</th>
+				<th>主观成绩</th>
+				<th>客观成绩</th>
+				<th>总分</th>
+			</table>
+
+			<!--翻页-->
+			<nav aria-label="...">
+				<ul class="pager">
+					<li><a href="#" onclick="limitJian()">上一页</a></li>
+					<li><a href="#" onclick="limitJia()">下一页</a></li>
+				</ul>
+			</nav>
+		</div>
+
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	</body>
+
+</html>

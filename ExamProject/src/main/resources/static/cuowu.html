@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>错误率TOP5</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+</head>
+<script type="text/javascript">
+
+    window.onload = function () {
+        //alert("------------")
+        var exam = [];
+        var errors = [];
+
+        var url = "/hadoop/errordd"
+        $.post(url, function (data) {
+            // 遍历
+            $.post(url, function (data) {
+                // 遍历
+                for (var err in data) {
+                    // alert(data[wave].exam_id +","+data[wave].subjective_mark+","+data[wave].objective_mark+","+data[wave].total_mark)
+                    exam.push(data[err].question_id)
+                    errors.push(data[err].error_rate)
+                }
+                // 调用
+                cuowu(exam, errors)
+            })
+
+        }, "json");
+
+    }
+
+</script>
+
+<body>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">首页</a></li>
+        <li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
+        <li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
+        <li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
+    </ul>
+
+    <div style="width: 1200px; height: 800px; margin: auto;">
+
+        <!--页头-->
+        <div class="page-header">
+            <h1>错误率TOP5
+                <small>TOP5</small>
+            </h1>
+        </div>
+
+        <!--圆饼图-->
+        <div id="main" style="width: 800px;height:400px; margin-top: 30px; margin: auto;"></div>
+
+    </div>
+
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="js/echarts.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function cuowu(exam, errors) {
+            //alert(exam)
+            //alert(errors)
+            var myChart = echarts.init(document.getElementById('main'));
+
+            option = {
+                title: {
+                    text: '错误率TOP',
+                    subtext: 'top',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['TOP1:' + exam[0], 'TOP2:' + exam[1], 'TOP3:' + exam[2], 'TOP4:' + exam[3], 'TOP5:' + exam[4]]
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [
+                            {value: errors[0], name: 'TOP1:' + exam[0]},
+                            {value: errors[1], name: 'TOP2:' + exam[1]},
+                            {value: errors[2], name: 'TOP3:' + exam[2]},
+                            {value: errors[3], name: 'TOP4:' + exam[3]},
+                            {value: errors[4], name: 'TOP5:' + exam[4]}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        }
+    </script>
+</body>
+
+</html>

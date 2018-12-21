@@ -1,16 +1,14 @@
 package com.qianfeng.domain;
 
-import java.io.Serializable;
-
-public class VIPStudent implements Serializable {
+public class WaveStudent {
 
     private String exam_id; // 考试id
     private String start_time; // 考试时间
-    private String calss_name; // 班级
+    private String class_name; // 班级
     private String examinee_num; // 学号
     private String examinee_name; // 姓名
-    private String objective_mark; // 主观题
-    private String subjective_mark; // 客观题
+    private String objective_mark; // 客观题
+    private String subjective_mark; // 主观题
     private String total_mark; // 总分
 
     public String getExam_id() {
@@ -29,12 +27,12 @@ public class VIPStudent implements Serializable {
         this.start_time = start_time;
     }
 
-    public String getCalss_name() {
-        return calss_name;
+    public String getClass_name() {
+        return class_name;
     }
 
-    public void setCalss_name(String calss_name) {
-        this.calss_name = calss_name;
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
     }
 
     public String getExaminee_num() {
@@ -79,10 +77,10 @@ public class VIPStudent implements Serializable {
 
     @Override
     public String toString() {
-        return "VIPStudent{" +
+        return "WaveStudent{" +
                 "exam_id='" + exam_id + '\'' +
                 ", start_time='" + start_time + '\'' +
-                ", calss_name='" + calss_name + '\'' +
+                ", class_name='" + class_name + '\'' +
                 ", examinee_num='" + examinee_num + '\'' +
                 ", examinee_name='" + examinee_name + '\'' +
                 ", objective_mark='" + objective_mark + '\'' +

@@ -10,6 +10,6 @@ import java.util.List;
 public interface testDao {
 
     //模拟 查询数据库所有数据，格式要这样写
-    @Select("select * from xxx where name=#{a} and age = #{age}")
+    @Select("select * from xxx where name=#{name} and age = #{age}")
     public List findAll(@Param("name") String name, @Param("age") int age);
 }

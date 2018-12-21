@@ -6,38 +6,26 @@ import com.qianfeng.utils.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/vip")
 public class VipController {
 
     @Autowired
     VipStudentService vipStudentService;
 
-    // 当前页面，默认为 1
-    private Integer pageCode = 1;
-    public void setPageCode(Integer pageCode) {
-        if(pageCode == null){
-            pageCode = 1;
-        }
-        this.pageCode = pageCode;
-    }
-    // 每页显示数据的条数
-    private Integer pageSize = 10;
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+    @RequestMapping("/vipdd")
+    @ResponseBody
+    public PageBean<VIPStudent> vipStudent(String select_value, Integer code, Integer size) {
+        System.out.println(select_value + " " + code + " " + size);
+        PageBean<VIPStudent> page = vipStudentService.findAll(code, size, select_value);
+        return page;
     }
 
-    @RequestMapping("/vip")
-    public List<VIPStudent> vipStudent(String select_value){
-        PageBean<VIPStudent> page = vipStudentService.findAll(pageCode,pageSize,select_value);
-        List<VIPStudent> beanList = page.getBeanList();
-        return beanList;
+    @RequestMapping("/tovip")
+    public String toVip() {
+        System.out.println("vip...");
+        return "vip";
     }
-
-
-
 
 }

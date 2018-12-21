@@ -12,7 +12,7 @@ public class PageBean<T> {
 	private int pageCode;
 	
 	// 总页数
-	// private int totalPage;
+	private int totalPage;
 	
 	// 总记录数
 	private int totalCount;
@@ -44,9 +44,9 @@ public class PageBean<T> {
 		}
 	}
 	
-	/*public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
-	}*/
+	public void setTotalPage() {
+		this.totalPage = this.getTotalPage();
+	}
 	
 	public int getTotalCount() {
 		return totalCount;
