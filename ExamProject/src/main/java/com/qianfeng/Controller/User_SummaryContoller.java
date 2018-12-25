@@ -1,10 +1,7 @@
 package com.qianfeng.Controller;
 
 import com.qianfeng.Service.Inter.User_SummaryServiceInter;
-import com.qianfeng.domain.Ability;
-import com.qianfeng.domain.Error_Rate;
-import com.qianfeng.domain.ExamineeInfo;
-import com.qianfeng.domain.User_Summary;
+import com.qianfeng.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +83,18 @@ public class User_SummaryContoller {
     @ResponseBody
     public List<Error_Rate> findErrorByCategory(String category_name) {
         List<Error_Rate> list = user_summaryImpl.findErrorByCategory(category_name);
+        return list;
+    }
+    // 根据学号和考场的id进行查找学生的信息
+    @RequestMapping("/findHbaseInfoById")
+    public String findInfoById(){return "T";}
+    @RequestMapping("/findHbaseInfo")
+    @ResponseBody
+    public List<Xiangqing> findHbaseInfo(String examinee_num,String exam_id) throws Exception {
+        String startRow = examinee_num+","+exam_id+","+1;
+        String endRow = examinee_num+","+exam_id+","+9999;
+        System.out.println(startRow+":"+endRow);
+        List<Xiangqing> list = user_summaryImpl.findAllByExaminee_Num2Hbase(startRow, endRow);
         return list;
     }
 }

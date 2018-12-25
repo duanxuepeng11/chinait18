@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#bt").click(function () {
+                var examinee_num = document.getElementById("num").value;
+                var exam_id = document.getElementById("exam_id").value;
+                alert(exam_id);
+                $.ajax({
+                    type: "Post",
+                    url: "/hadoop/findHbaseInfo",
+                    data: {
+                        examinee_num: examinee_num,
+                        exam_id:exam_id
+                    },
+                    success: function (result) {
+                       $.each(result,function (i,n) {
+                           alert(n);
+                       });
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
-this is a test page
+<div>
+学号：<input type="text" id="num"/>
+考试id：<input type="text" id="exam_id"/>
+<input type="submit" id="bt" value="提交" />
+</div>
+<div>
+
+</div>
 </body>
 </html>
