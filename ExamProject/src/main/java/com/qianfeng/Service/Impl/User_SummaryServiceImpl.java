@@ -97,4 +97,53 @@ public class User_SummaryServiceImpl implements User_SummaryServiceInter {
         }
         return list;
     }
+
+    // 从hbase中拉去指定班级指定考试id的学生信息
+    @Override
+    public List<Huizong> findAllByClass_name2Hbase(String startRow, String endRow) {
+        Configuration conf = HBaseConfiguration.create();
+        conf.set("hbase.zookeeper.quorum", "es01:2181,es02:2181,es03:2181");
+        Connection conn = null;
+        List<Huizong> list = new ArrayList<Huizong>();
+        try {
+            conn = ConnectionFactory.createConnection(conf);
+            Table table = conn.getTable(TableName.valueOf("ns1:huizong"));
+            Scan scan = new Scan();
+            scan.setStartRow(Bytes.toBytes(startRow));
+            scan.setStopRow(Bytes.toBytes(endRow));
+            ResultScanner res = table.getScanner(scan);
+            Iterator<Result> iterator = res.iterator();
+            byte[] f = Bytes.toBytes("f1");
+            byte[] exam_ids = Bytes.toBytes("exam_id");
+            byte[] start_times = Bytes.toBytes("start_time");
+            byte[] class_names = Bytes.toBytes("class_name");
+            byte[] examinee_nums = Bytes.toBytes("examinee_num");
+            byte[] examinee_names = Bytes.toBytes("examinee_name");
+            byte[] submit_times = Bytes.toBytes("submit_time");
+            byte[] exam_times = Bytes.toBytes("exam_time");
+            byte[] objective_marks = Bytes.toBytes("objective_mark");
+            byte[] subjective_marks = Bytes.toBytes("subjective_mark");
+            byte[] total_marks = Bytes.toBytes("total_mark");
+            while(iterator.hasNext()){
+                Result r = iterator.next();
+                byte[] exam_id = r.getValue(f, exam_ids);
+                byte[] start_time = r.getValue(f, start_times);
+                byte[] class_name = r.getValue(f, class_names);
+                byte[] examinee_num = r.getValue(f, examinee_nums);
+                byte[] examinee_name = r.getValue(f, examinee_names);
+                byte[] submit_time = r.getValue(f, submit_times);
+                byte[] exam_time = r.getValue(f, exam_times);
+                byte[] objective_mark = r.getValue(f, objective_marks);
+                byte[] subjective_mark = r.getValue(f, subjective_marks);
+                byte[] total_mark = r.getValue(f, total_marks);
+                Huizong huizong = new Huizong(Bytes.toString(exam_id), Bytes.toString(start_time), Bytes.toString(class_name), Bytes.toString(examinee_num), Bytes.toString(examinee_name), Bytes.toString(submit_time), Bytes.toString(exam_time), Bytes.toString(objective_mark), Bytes.toString(subjective_mark), Bytes.toString(total_mark));
+                list.add(huizong);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+
+    }
 }

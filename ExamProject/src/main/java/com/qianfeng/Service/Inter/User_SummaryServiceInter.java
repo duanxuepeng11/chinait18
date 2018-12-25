@@ -12,5 +12,9 @@ public interface User_SummaryServiceInter {
     Ability findAbilityByNum(String examinee_name);
 
     List<Error_Rate> findErrorByCategory(String category_name);
+    // hbase中详情信息查询
     List<Xiangqing> findAllByExaminee_Num2Hbase(String startRow, String endRow) throws IOException, Exception;
+    // hbase中汇总信息查询
+    List<Huizong> findAllByClass_name2Hbase(String startRow,String endRow) throws IOException;
+
 }

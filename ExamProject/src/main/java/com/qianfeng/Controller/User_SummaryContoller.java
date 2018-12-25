@@ -97,4 +97,16 @@ public class User_SummaryContoller {
         List<Xiangqing> list = user_summaryImpl.findAllByExaminee_Num2Hbase(startRow, endRow);
         return list;
     }
+    // 根据学号和考场的id进行查找学生的信息
+    @RequestMapping("/findHbaseInfoById_")
+    public String findInfoById_(){return "T1";}
+    @RequestMapping("/findHbaseInfo_")
+    @ResponseBody
+    public List<Huizong> findHbaseInfo_(String class_num,String exam_id) throws Exception {
+        String startRow = class_num+","+exam_id+","+1;
+        String endRow = class_num+","+exam_id+","+9999;
+        System.out.println(startRow+":"+endRow);
+        List<Huizong> list = user_summaryImpl.findAllByClass_name2Hbase(startRow, endRow);
+        return list;
+    }
 }
