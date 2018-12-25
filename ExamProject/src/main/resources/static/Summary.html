@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
+    <script type="text/javascript">
+        var score_avg = [];
+        var category = [];
+        // 姓名
+        var name = "";
+        $(document).ready(function () {
+            $("#bt").click(function () {
+                score_avg = [];
+                category = [];
+                var examinee_name = document.getElementById("exam").value;
+                $.ajax({
+                    type: "Post",
+                    url: "/hadoop/user_summary",
+                    data: {examinee_name: examinee_name},
+                    success: function (result) {
+
+                        $.each(result, function (i, n) {
+                            category[i]= n.category_name;
+                            score_avg[i] = n.score_avg;
+                            name = n.examinee_num;
+                        });
+
+                        tt(category,score_avg,name)
+                    }
+                });
+
+
+            });
+        });
+
+        function tt(categorys,score_avgs,names) {
+            alert(categorys)
+            alert(score_avgs)
+            alert(names)
+            var myChart = echarts.init(document.getElementById('main'));
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: categorys
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: score_avgs,
+                    type: 'bar'
+                }]
+            };
+            myChart.setOption(option);
+        }
+    </script>
+</head>
+<body>
+
+
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">首页</a></li>
+    <li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
+    <li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
+    <li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
+    <li role="presentation"><a href="/hadoop/qtx">全题型困难度</a></li>
+    <li role="presentation"><a href="/hadoop/findAbility">学员能力分析</a></li>
+    <li role="presentation"><a href="/hadoop/findPaperErr">考试试题错误率</a></li>
+    <li role="presentation"><a href="/hadoop/findSummary">学员汇总信息</a></li>
+</ul>
+<!--考试ID:<input type="text" name="exam_id" id="exam"/>
+考试阶段:<input type="text" name="category_name" id="category"/>
+<input type="submit" value="提交" id="bt"/>-->
+
+
+<div class="col-md-3">
+    <div class="row" style="margin-top: 50px;margin-left: 10px;">
+        <div class="col-md-9"><input type="text" class="form-control input-lg" id="exam" placeholder="姓名"
+                                     style="border-color: #4CAE4C;"></div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;margin-left: 80px;">
+        <div class="col-md-5">
+            <button type="button" class="btn btn-default btn-lg btn-success btn-block" id="bt">查 询
+            </button>
+        </div>
+    </div>
+</div>
+<div class="col-md-9">
+    <div id="main" style="width:1200px;height:700px;"></div>
+</div>
+</body>
+</html>
