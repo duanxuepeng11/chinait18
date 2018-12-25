@@ -14,7 +14,7 @@
             //3个 ajax，第一个异步访问 去后台请求名字
             $.ajax({
                     type : "GET",
-                    url : "/selectAll",  //1.实现与后台连接的接口
+                    url : "/hadoop/selectAll",  //1.实现与后台连接的接口
                     data: "examinee_num="+examinee_num,
                     dataType: 'json',
                     async: false,
@@ -40,6 +40,16 @@
     </script>
 </head>
 <body>
+
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">首页</a></li>
+    <li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
+    <li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
+    <li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
+    <li role="presentation"><a href="/hadoop/qtx">全题型困难度</a></li>
+</ul>
+
+
 <nav class="navbar navbar-inverse" style="margin-bottom: 40px;">
     <div class="navbar-header">
         <a class="navbar-brand" href="#"><b>请输入学号</b></a>
@@ -108,8 +118,5 @@
        myChart.setOption(option);
    }
 </script>
-<footer>
-    <img src="image/TechSUfooter(2).png" style="width: 100%;height: 100px;margin-bottom: -100px">
-</footer>
 </body>
 </html>
