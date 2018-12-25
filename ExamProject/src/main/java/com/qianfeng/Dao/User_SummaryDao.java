@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 public interface User_SummaryDao {
-    // 根据姓名查找学号
+    // 根据姓名查找学号 a
     @Select("select examinee_num,examinee_name from basic_huizong")
     List<ExamineeInfo> findIdByName();
 
