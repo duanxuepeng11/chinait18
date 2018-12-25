@@ -32,21 +32,21 @@ public class User_SummaryContoller {
     @RequestMapping("/user_summary")
     @ResponseBody
     public List<User_Summary> findByExaminee_num(String examinee_name) {
-        System.out.println(examinee_name + "111111111");
         List<ExamineeInfo> infoList = user_summaryImpl.findIdByName();
         HashMap<String, String> infoMap = new HashMap<String, String>();
         for (ExamineeInfo info : infoList) {
             String name = info.getExaminee_name();
             String num = info.getExaminee_num();
-            infoMap.put(num, name);
+            infoMap.put(name, num);
         }
-        List<User_Summary> list = user_summaryImpl.findAll(examinee_name);
+        String examinee_num = infoMap.get(examinee_name);
+        List<User_Summary> list = user_summaryImpl.findAll(examinee_num);
         List<User_Summary> resList = new ArrayList<User_Summary>();
         int i = 0;
         for (User_Summary summary : list) {
             User_Summary sm = new User_Summary();
             String examinee_num1 = summary.getExaminee_num();
-            String name = infoMap.get(examinee_num1);
+            String name = examinee_name;
             sm.setExaminee_name(name);
             sm.setCategory_name(summary.getCategory_name());
             sm.setClass_name(summary.getClass_name());
@@ -60,11 +60,13 @@ public class User_SummaryContoller {
         }
         return resList;
     }
+
     // 根据学号查询各种能力
     @RequestMapping("/findAbility")
     public String findAbility() {
         return "Ability";
     }
+
     // 根据考试id和阶段来查询学生信息
     @RequestMapping("/user_Ability")
     @ResponseBody
@@ -72,13 +74,17 @@ public class User_SummaryContoller {
         Ability ability = user_summaryImpl.findAbilityByNum(examinee_name);
         return ability;
     }
+
     // 跳转到错误率页面
     @RequestMapping("/findPaperErr")
-    public String  findPaperError(){return "PaperErr";    }
+    public String findPaperError() {
+        return "PaperErr";
+    }
+
     // 根据考试场次名查找每题错误率
     @RequestMapping("/findErrorByCategory")
     @ResponseBody
-    public List<Error_Rate> findErrorByCategory(String category_name){
+    public List<Error_Rate> findErrorByCategory(String category_name) {
         List<Error_Rate> list = user_summaryImpl.findErrorByCategory(category_name);
         return list;
     }
