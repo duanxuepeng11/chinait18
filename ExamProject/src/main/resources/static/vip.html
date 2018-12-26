@@ -54,27 +54,39 @@
                 var beanlist = data.beanList
                 zong = data.totalPage
 				for(var list in beanlist){
-                    $("#tables").append("<tr><td>" + beanlist[list].exam_id + "</td>" +
+                    /*$("#tables").append("<tr><td>" + beanlist[list].exam_id + "</td>" +
                         "<td>" + beanlist[list].start_time + "</td>" +
                         "<td>" + beanlist[list].calss_name + "</td>" +
                         "<td>" + beanlist[list].examinee_num + "</td>" +
                         "<td>" + beanlist[list].examinee_name + "</td>" +
                         "<td>" + beanlist[list].objective_mark + "</td>" +
                         "<td>" + beanlist[list].subjective_mark + "</td>" +
-                        "<td>" + beanlist[list].total_mark + "</td></tr>")
+                        "<td>" + beanlist[list].total_mark + "</td></tr>")*/
+                    $("#tables").append("<tr><td>" + beanlist[list].calss_name + "</td>" +
+                        "<td>" + beanlist[list].examinee_num + "</td>" +
+                        "<td>" + beanlist[list].examinee_name + "</td>")
 				}
             }, "json");
         }
 
+        
 	</script>
 	<body>
 
-		<ul class="nav nav-tabs">
-			<li role="presentation" class="active"><a href="#">首页</a></li>
-			<li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
-			<li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
-			<li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
-		</ul>
+
+	<ul class="nav nav-tabs">
+		<li role="presentation" class="active"><a href="index.html">首页</a></li>
+		<li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
+		<li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
+		<li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
+		<li role="presentation"><a href="/hadoop/qtx">全题型困难度</a></li>
+		<li role="presentation"><a href="/hadoop/findAbility">学员能力分析</a></li>
+		<li role="presentation"><a href="/hadoop/findPaperErr">考试试题错误率</a></li>
+		<li role="presentation"><a href="/hadoop/findSummary">学员汇总信息</a></li>
+		<li role="presentation"><a href="/hadoop/findHbaseInfoById">考试详情表信息</a></li>
+		<li role="presentation"><a href="/hadoop/findHbaseInfoById_">班级考试情况查询</a></li>
+		<li role="presentation"><a href="/hadoop/toerrzx">成绩修正图</a></li>
+	</ul>
 
 		<div style="width: 1200px; height: 800px; margin: auto;">
 
@@ -92,14 +104,14 @@
 
 			<!--列表-->
 			<table class="table" id="tables">
-				<th>考试ID</th>
-				<th>考试时间</th>
+				<!--<th>考试ID</th>
+				<th>考试时间</th>-->
 				<th>班级</th>
 				<th>学号</th>
 				<th>姓名</th>
-				<th>主观成绩</th>
+				<!--<th>主观成绩</th>
 				<th>客观成绩</th>
-				<th>总分</th>
+				<th>总分</th>-->
 			</table>
 
 			<!--翻页-->

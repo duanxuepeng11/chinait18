@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询各种能力</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
+    <script type="text/javascript">
+        var ability = []
+        $(document).ready(function () {
+            $("#bt").click(function () {
+                var examinee_name = document.getElementById("name").value;
+                ability = [];
+                $.ajax({
+                    type: "Post",
+                    url: "/hadoop/user_Ability",
+                    data: {examinee_name: examinee_name},
+                    success: function (result) {
+                        ability=[
+                            {value:result.biancheng, name:'编程能力'},
+                            {value:result.biaoda, name:'表达能力'},
+                            {value:result.lijie, name:'理解能力'}
+                        ]
+                        tt(ability)
+                    }
+                });
+            });
+        });
+        function tt(ability) {
+            var myChart = echarts.init(document.getElementById('main'));
+            option = {
+                title : {
+                    text: '学员能力分析',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                },
+                series : [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:ability,
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
+    </script>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="index.html">首页</a></li>
+    <li role="presentation"><a href="/hadoop/tobodong">个人成绩波动</a></li>
+    <li role="presentation"><a href="/hadoop/tocuowu">试题错误率TOP</a></li>
+    <li role="presentation"><a href="/hadoop/tovip">特殊学员列表</a></li>
+    <li role="presentation"><a href="/hadoop/qtx">全题型困难度</a></li>
+    <li role="presentation"><a href="/hadoop/findAbility">学员能力分析</a></li>
+    <li role="presentation"><a href="/hadoop/findPaperErr">考试试题错误率</a></li>
+    <li role="presentation"><a href="/hadoop/findSummary">学员汇总信息</a></li>
+    <li role="presentation"><a href="/hadoop/findHbaseInfoById">考试详情表信息</a></li>
+    <li role="presentation"><a href="/hadoop/findHbaseInfoById_">班级考试情况查询</a></li>
+    <li role="presentation"><a href="/hadoop/toerrzx">成绩修正图</a></li>
+</ul>
+姓名 <input type="text" id="name"/>
+<input type="submit" id="bt"/>
+<div>
+    <div id="main" style="width:1200px;height:700px;"></div>
+</div>
+</body>
+</html>
