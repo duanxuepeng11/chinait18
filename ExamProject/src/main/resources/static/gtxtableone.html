@@ -14,7 +14,7 @@
             //3个 ajax，第一个异步访问 去后台请求名字
             $.ajax({
                     type : "GET",
-                    url : "/hadoop/selectAll",  //1.实现与后台连接的接口
+                    url : "/hadoop/gtxselectAll",  //1.实现与后台连接的接口
                     data: "examinee_num="+examinee_num,
                     dataType: 'json',
                     async: false,
@@ -63,7 +63,7 @@
        }
        var option = {
            title: {
-               text: '各题型分析正确率',
+               text: '全题型分析正确率',
                subtext: b,
                x: 'center'
            },
